@@ -5,7 +5,7 @@ const { User } = require('../db/models/models_index')
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
   try {
     const users = await User.findAll()
     

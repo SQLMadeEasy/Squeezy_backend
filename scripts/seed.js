@@ -2,6 +2,8 @@ const db = require('../db/index')
 
 
 const { User } = require('../db/models/models_index')
+const { Product } = require('../db/models/models_index')
+
 
 
 const users = [
@@ -29,6 +31,21 @@ const users = [
 ]
 
 
+const products = [
+    {
+        name: "the greatest product",
+        description: "It is it's name", 
+        price: 5500
+    },
+    {
+        name: "Lawnmower 5000",
+        description: "It'll mow your lawn. What else do you want?'",
+        price: 10000
+    }
+]
+
+
+
 
 // seed your database here!
 const seed = async () => {
@@ -39,7 +56,12 @@ const seed = async () => {
                 return User.create(user)
             })
         )
-
+        
+        await Promise.all(
+            products.map(product => {
+                return Product.create(product)
+            })
+        )
 
         // console.log(green('Seeding success!'))
         console.log('Seeding success!')
