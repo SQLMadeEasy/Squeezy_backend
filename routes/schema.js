@@ -6,35 +6,32 @@ const { User } = require('../db/models/models_index')
 
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-
-    seq.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public'").then(function (rows) {
-        // console.log(rows)
-        rows.forEach(array_table_name => {
-            // console.log(array_table_name)
-            seq.query(`SELECT *
-  FROM information_schema.columns
- WHERE table_schema = 'public'
-   AND table_name   = '${array_table_name[0]}'
-     ;`).then(function (result) {
-                result.forEach(row => {
-                    // console.log(row)
-                    if (row[0]) {
-                        console.log(row[0].column_name)
-                    }
-                })
-                
-            });
-        })
-    });
-
+router.get('/', async function (req, res, next) {
 
    
-    
 
-
-
-        res.send("success")
+    const tableNamesQueryResult = await seq.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
+        const currDBSchema = {}
+        for (const array_table_name of tableNamesQueryResult) {
+            const table_name = array_table_name[0]
+            currDBSchema[table_name] = {}
+            const tableColumnsQueryResult = await seq.query(`SELECT *
+                    FROM information_schema.columns
+                    WHERE table_schema = 'public'
+                    AND table_name   = '${table_name}'
+                ;`)
+            for (const column of tableColumnsQueryResult[0]) {
+                if (column.data_type === 'character varying') {
+                    column.data_type = 'string'
+                } 
+                if (column.data_type === 'timestamp with time zone') {
+                    column.data_type = 'datetime'
+                }
+                currDBSchema[table_name][column.column_name] = column.data_type
+            }
+        }
+        res.json(currDBSchema)
+     
 });
 
 module.exports = router;
