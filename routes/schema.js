@@ -7,9 +7,6 @@ const { User } = require('../db/models/models_index')
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-
-   
-
     const tableNamesQueryResult = await seq.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
         const currDBSchema = {}
         for (const array_table_name of tableNamesQueryResult) {
@@ -31,7 +28,18 @@ router.get('/', async function (req, res, next) {
             }
         }
         res.json(currDBSchema)
-     
 });
+
+//TODO: replace with a get, currently body isn't being sent with get
+
+router.post('/run_query', async (req, res, next) => {
+    try{
+        const data = await seq.query(req.body.query)
+        res.json(data[0])
+    } catch (err) {
+        next(err)
+    }
+ 
+})
 
 module.exports = router;
