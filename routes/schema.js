@@ -7,7 +7,7 @@ const { User } = require('../db/models/models_index')
 
 
 /* GET users listing. */
-router.get('/', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
     const dbPassword = req.body.databasePassword || ''
     const userDB = new Sequelize(req.body.databaseName, req.body.databaseUser, dbPassword, {
         host: req.body.databaseHostname,
