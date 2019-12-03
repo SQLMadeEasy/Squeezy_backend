@@ -48,7 +48,7 @@ router.post('/', async function (req, res, next) {
             }
         }
         console.log(tableNamesQueryResult)
-        userDB.close()
+        // userDB.close()
         res.json(currDBSchema)
 });
 
