@@ -8,7 +8,13 @@ const { User } = require('../db/models/models_index')
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-    const tableNamesQueryResult = await seq.query(`SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name NOT IN(
+    const dbPassword = req.body.databasePassword || ''
+    const userDB = new Sequelize(req.body.databaseName, req.body.databaseUser, dbPassword, {
+        host: req.body.databaseHostname,
+        dialect: 'postgres',
+        port: req.body.databasePort,
+    });
+    const tableNamesQueryResult = await userDB.query(`SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name NOT IN(
           'pg_catalog', 
           'information_schema', 
           'management', 
@@ -41,6 +47,7 @@ router.get('/', async function (req, res, next) {
             }
         }
         console.log(tableNamesQueryResult)
+        userDB.close()
         res.json(currDBSchema)
 });
 
@@ -54,7 +61,7 @@ router.post('/run_query', async (req, res, next) => {
         const userDB = new Sequelize(req.body.databaseName, req.body.databaseUser, dbPassword, {
             host: req.body.hostname,
             dialect: 'postgres',
-            port: 5432,
+            port: req.body.databasePort,
         });
         try {
             const data = await userDB.query(req.body.query)
