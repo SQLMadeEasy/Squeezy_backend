@@ -5,7 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 
-var whitelist = ['http://localhost:3000', 'https://englishql-backend.onrender.com']
+var whitelist = ['http://localhost:3000', 'https://sqlmadeeasy.onrender.com']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
