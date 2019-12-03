@@ -5,16 +5,16 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 
-var whitelist = ['localhost', 'https://sqlmadeeasy.onrender.com']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+// var whitelist = ['localhost', 'https://sqlmadeeasy.onrender.com']
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -22,7 +22,7 @@ var schemaRouter = require("./routes/schema");
 
 var app = express();
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 // view engine setup
