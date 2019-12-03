@@ -35,12 +35,31 @@ router.get('/', async function (req, res, next) {
 
 router.post('/run_query', async (req, res, next) => {
     //For individual credentials passed in body
-    const dbPassword = req.body.databasePassword || ''
-    const userDB = new Sequelize(req.body.databaseName, req.body.databaseUser, dbPassword, {
-        host: req.body.hostname,
-        dialect: 'postgres',
-        port: 5432,
-    });
+
+    if (req.body.databaseName) {
+        const dbPassword = req.body.databasePassword || ''
+        const userDB = new Sequelize(req.body.databaseName, req.body.databaseUser, dbPassword, {
+            host: req.body.hostname,
+            dialect: 'postgres',
+            port: 5432,
+        });
+        try {
+            const data = await userDB.query(req.body.query)
+            userDB.close()
+            res.json(data[0])
+        } catch (err) {
+            next(err)
+        }
+    } else {
+        try {
+            const data = await seq.query(req.body.query)
+            res.json(data[0])
+        } catch (err) {
+            next(err)
+        }
+
+    }
+
 
     //for connection string passed in body: 
 
@@ -51,13 +70,7 @@ router.post('/run_query', async (req, res, next) => {
     //     }
     // )
 
-    try{
-        const data = await userDB.query(req.body.query)
-        userDB.close()
-        res.json(data[0])
-    } catch (err) {
-        next(err)
-    }
+
  
 })
 
