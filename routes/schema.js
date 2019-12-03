@@ -8,9 +8,7 @@ const { User } = require('../db/models/models_index')
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-    const tableNamesQueryResult = await seq.query(`SELECT table_name FROM  information_schema.tables
-      WHERE table_type = 'BASE TABLE'
-      AND table_schema NOT IN(
+    const tableNamesQueryResult = await seq.query(`SELECT table_name FROM information_schema.tables WHERE table_schema='public'   AND table_schema NOT IN(
           'pg_catalog', 
           'information_schema', 
           'management', 
