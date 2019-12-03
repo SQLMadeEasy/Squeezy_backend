@@ -24,8 +24,8 @@ router.get('/', async function (req, res, next) {
           'geometry_columns'
           ) and table_name != '_Migration'`)
         const currDBSchema = {}
-        for (const array_table_name of tableNamesQueryResult) {
-            const table_name = array_table_name[0]
+        for (const object_table_name of tableNamesQueryResult[0]) {
+            const table_name = object_table_name.table_name
             currDBSchema[table_name] = {}
             const tableColumnsQueryResult = await seq.query(`SELECT *
                     FROM information_schema.columns
@@ -42,6 +42,7 @@ router.get('/', async function (req, res, next) {
                 currDBSchema[table_name][column.column_name] = column.data_type
             }
         }
+        console.log(tableNamesQueryResult)
         res.json(currDBSchema)
 });
 
