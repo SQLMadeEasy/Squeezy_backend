@@ -8,7 +8,7 @@ const { User } = require('../db/models/models_index')
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-    const tableNamesQueryResult = await seq.query(`SELECT table_name FROM information_schema.tables WHERE table_schema='public'   AND table_schema NOT IN(
+    const tableNamesQueryResult = await seq.query(`SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name NOT IN(
           'pg_catalog', 
           'information_schema', 
           'management', 
@@ -20,7 +20,7 @@ router.get('/', async function (req, res, next) {
           'pg_stat_statements',
           'geography_columns',
           'geometry_columns'
-          ) and table_name != '_Migration'`)
+          )`)
         const currDBSchema = {}
         for (const array_table_name of tableNamesQueryResult) {
             const table_name = array_table_name[0]
