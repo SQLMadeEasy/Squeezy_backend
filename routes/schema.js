@@ -47,8 +47,6 @@ router.post('/', async function (req, res, next) {
                 currDBSchema[table_name][column.column_name] = column.data_type
             }
         }
-        console.log(tableNamesQueryResult)
-        // userDB.close()
         res.json(currDBSchema)
 });
 
@@ -56,6 +54,7 @@ router.post('/', async function (req, res, next) {
 
 router.post('/run_query', async (req, res, next) => {
     //For individual credentials passed in body
+    console.log("BODY IS: ",req.body)
 
     if (req.body.databaseName) {
         const dbPassword = req.body.databasePassword || ''

@@ -41,6 +41,11 @@ const products = [
         name: "Lawnmower 5000",
         description: "It'll mow your lawn. What else do you want?'",
         price: 10000
+    },
+    {
+        name: "Some Book",
+        description: "What does it matter? You won't read it.",
+        price: 4000
     }
 ]
 
